@@ -146,3 +146,4 @@ mysql> DESC EMP1;
 | adhar_no | bigint      | YES  |     | NULL    |       |
 +----------+-------------+------+-----+---------+-------+
 5 rows in set (0.00 sec)
+//VERIFIED
