@@ -1,3 +1,4 @@
+
 Create an INVOICE database and having following tables.
 mysql> create database INVOICE;
 Query OK, 1 row affected (0.01 sec)
@@ -54,7 +55,10 @@ mysql> desc Invoice_master;
 +----------+------+------+-----+---------+-------+
 3 rows in set (0.00 sec)
 
-Invoice_item(inv_id (FK),  pid(FK), quantity)
+Invoice_item(inv_id (FK),  pid(FK), quantity)mysql> drop table STUDENT1;
+Query OK, 0 rows affected (0.00 sec)
+
+
 mysql> create table  Invoice_item(inv_id int ,  pid int , quantity int,foreign key(inv_id) references Invoice_master(inv_id),foreign key(pid) references Product(pid));
 Query OK, 0 rows affected (0.03 sec)
 
@@ -67,3 +71,67 @@ mysql> desc Invoice_item;
 | quantity | int  | YES  |     | NULL    |       |
 +----------+------+------+-----+---------+-------+
 3 rows in set (0.00 sec)
+
+
+a)      DDL-ALTER & DROP
+
+    1. Add a column ‘SSN’ at the first position in the table EMPLOYEE
+
+    
+mysql> alter table EMPLOYEE add SSN int first;
+Query OK, 0 rows affected (0.02 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc EMPLOYEE;
++----------+-------------+------+-----+---------+-------+
+| Field    | Type        | Null | Key | Default | Extra |
++----------+-------------+------+-----+---------+-------+
+| SSN      | int         | YES  |     | NULL    |       |
+| emp_id   | int         | YES  |     | NULL    |       |
+| name     | varchar(20) | YES  |     | NULL    |       |
+| city     | varchar(20) | YES  |     | NULL    |       |
+| dob      | date        | YES  |     | NULL    |       |
+| adhar_no | bigint      | YES  |     | NULL    |       |
++----------+-------------+------+-----+---------+-------+
+6 rows in set (0.00 sec)
+
+ 2. Change the data type of the column ‘DOB’  in year the table EMPLOYEE 
+
+ mysql> alter table EMPLOYEE modify dob year;
+Query OK, 0 rows affected (0.03 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+   
+   3. Delete the column ‘emp_id’ the table EMPLOYEE. 
+
+   mysql> alter table EMPLOYEE drop  column emp_id;
+Query OK, 0 rows affected (0.02 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+   
+   4. Add  the constraint unique for columns ‘SSN, ‘adhar_no’ the table EMPLOYEE
+
+
+   mysql> alter table EMPLOYEE add constraint SSN_unique unique(SSN),add constraint adharno_unique unique(adhar_no);
+Query OK, 0 rows affected (0.02 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+
+   5. Delete the NULL constraint of ‘age’ in the STUDENT table.
+
+   mysql> ALTER TABLE STUDENT modify age int null;
+Query OK, 0 rows affected (0.03 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+   6. Change the table name EMPLOYEE as PERSON
+
+   mysql> rename TABLE EMPLOYEE TO PERSON;
+Query OK, 0 rows affected (0.02 sec)
+
+
+   7. Delete the table STUDENT1.
+
+mysql> drop table STUDENT1;
+Query OK, 0 rows affected (0.00 sec)
+
+
