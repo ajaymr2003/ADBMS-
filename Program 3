@@ -1,0 +1,148 @@
+a) TCL COMMANDS
+
+
+          1.    Commit
+mysql> set autocommit=off;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> insert into STUDENT values(04,'jaseem,',24,'m');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> select * from STUDENT;
++---------+---------+------+--------+
+| roll_no | name    | age  | gender |
++---------+---------+------+--------+
+|       1 | ajay    |   22 | M      |
+|       4 | jaseem, |   24 | m      |
++---------+---------+------+--------+
+2 rows in set (0.00 sec)
+
+mysql> commit;
+Query OK, 0 rows affected (0.00 sec)
+
+
+
+          2.    Rollback
+
+ysql> insert into STUDENT values(03,'amruth',23,'m');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> select * from STUDENT;
++---------+---------+------+--------+
+| roll_no | name    | age  | gender |
++---------+---------+------+--------+
+|       1 | ajay    |   22 | M      |
+|       3 | amruth  |   23 | m      |
+|       4 | jaseem, |   24 | m      |
++---------+---------+------+--------+
+3 rows in set (0.00 sec)
+
+mysql> rollback;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> select * from STUDENT;
++---------+---------+------+--------+
+| roll_no | name    | age  | gender |
++---------+---------+------+--------+
+|       1 | ajay    |   22 | M      |
+|       4 | jaseem, |   24 | m      |
++---------+---------+------+--------+
+2 rows in set (0.00 sec)
+
+mysql> 
+
+          3.    Savepoint
+
+mysql> insert into STUDENT values(03,'amruth',23,'m');
+Query OK, 1 row affected (0.00 sec)
+mysql> savepoint s1;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> insert into STUDENT values(02,'anjana',22,'f');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> savepoint s2;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> select * from STUDENT;
++---------+---------+------+--------+
+| roll_no | name    | age  | gender |
++---------+---------+------+--------+
+|       1 | ajay    |   22 | M      |
+|       2 | anjana  |   22 | f      |
+|       3 | amruth  |   23 | m      |
+|       4 | jaseem, |   24 | m      |
++---------+---------+------+--------+
+4 rows in set (0.00 sec)
+
+mysql> rollback to s1;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> select * from STUDENT;
++---------+---------+------+--------+
+| roll_no | name    | age  | gender |
++---------+---------+------+--------+
+|       1 | ajay    |   22 | M      |
+|       3 | amruth  |   23 | m      |
+|       4 | jaseem, |   24 | m      |
++---------+---------+------+--------+
+3 rows in set (0.00 sec)
+
+mysql> 
+
+b) DCL COMMAND
+ Create two users user1, user2
+
+CREATE USER ajay@'localhost' IDENTIFIED BY 'Ajay@123';
+CREATE USER amruth@'localhost' IDENTIFIED BY 'Amruth@123';
+
+1.              GRANT
+
+Give insert and select privilege to user 1 on customer table in the invoice database.
+
+mysql> use INVOICEE;
+Reading table information for completion of table and column names
+You can turn off this feature to get a quicker startup with -A
+
+Database changed
+mysql> GRANT SELECT, INSERT ON Customer TO ajay@'localhost';
+Query OK, 0 rows affected (0.00 sec)
+mysql> SHOW GRANTS FOR 'ajay'@'localhost';
++---------------------------------------------------------------------+
+| Grants for ajay@localhost                                           |
++---------------------------------------------------------------------+
+| GRANT USAGE ON *.* TO `ajay`@`localhost`                            |
+| GRANT SELECT, INSERT ON `INVOICEE`.`Customer` TO `ajay`@`localhost` |
++---------------------------------------------------------------------+
+2 rows in set (0.00 sec)
+
+
+Give update and delete privilege to user 2 on all tables in the invoice database.
+mysql> GRANT update, delete ON *.* TO amruth@'localhost';
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> SHOW GRANTS FOR 'amruth'@'localhost';
++-----------------------------------------------------+
+| Grants for amruth@localhost                         |
++-----------------------------------------------------+
+| GRANT UPDATE, DELETE ON *.* TO `amruth`@`localhost` |
++-----------------------------------------------------+
+1 row in set (0.00 sec)
+
+
+2.              REVOKE
+
+Remove delete privilege of user 2.
+mysql> REVOKE DELETE ON *.* FROM `amruth`@`localhost`;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> SHOW GRANTS FOR 'amruth'@'localhost';
++---------------------------------------------+
+| Grants for amruth@localhost                 |
++---------------------------------------------+
+| GRANT UPDATE ON *.* TO `amruth`@`localhost` |
++---------------------------------------------+
+1 row in set (0.01 sec)
+
+mysql> 
+
