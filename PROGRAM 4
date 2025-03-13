@@ -117,18 +117,20 @@ mysql> select name from Customer order by name desc;
 
 6.    Display the customer details sorted in ascending by city and descending by names.
 
-mysql> select * from Customer order by city asc,name desc;
-+-------+------+------------+------+------------+
-| id    | name | address    | city | ph_no      |
-+-------+------+------------+------+------------+
-| 10003 | pqr  | apk_house  | ksd  |  965648878 |
-| 10006 | mnl  | mnl_house  | ktm  |       NULL |
-| 10001 | abcd | abcd_house | mkm  | 9648457896 |
-| 10005 | pkr  | pkr_house  | mlp  | 7034534922 |
-| 10004 | hijk | hijk_house | omy  | 7844594555 |
-| 10002 | efgh | efgh_house | tdy  | 9644645455 |
-+-------+------+------------+------+------------+
+mysql> select name,city from Customer order by city asc,name desc;
++------+------+
+| name | city |
++------+------+
+| pqr  | ksd  |
+| mnl  | mkm  |
+| abcd | mkm  |
+| pkr  | mlp  |
+| hijk | omy  |
+| efgh | tdy  |
++------+------+
 6 rows in set (0.00 sec)
+
+
 
 
 7.    Find the customer names who have ‘e’ or ‘a’ in them and at least 3 characters in length
@@ -157,3 +159,70 @@ mysql> select name from Customer where name like'_b%';
 1 row in set (0.00 sec)
 
 mysql> 
+
+
+b) OPTIMIZING DATABASE:  (GROUP BY, AGGREGATE FUNCTIONS)
+1.    List product name, price except soap on price order.
+
+mysql> select pname,price from Product where pname!='soap';
++--------+--------------------+
+| pname  | price              |
++--------+--------------------+
+| pen    |                 51 |
+| pencil | 107.10000000000001 |
+| rubber |              132.6 |
+| scale  |               1530 |
++--------+--------------------+
+4 rows in set (0.00 sec)
+
+2.    Find minimum, maximum and average price of products.
+
+mysql> select min(price) as MINPRICE,max(price) as MAXPRICE,avg(price) as AVGPRICE from Product;
++----------+----------+----------+
+| MINPRICE | MAXPRICE | AVGPRICE |
++----------+----------+----------+
+|       51 |     1530 |    377.4 |
++----------+----------+----------+
+1 row in set (0.00 sec)
+
+3.    Find number of customers in each city.
+
+mysql> SELECT city, COUNT(*)  FROM Customer GROUP BY city;
++------+----------+
+| city | COUNT(*) |
++------+----------+
+| mkm  |        2 |
+| tdy  |        1 |
+| ksd  |        1 |
+| omy  |        1 |
+| mlp  |        1 |
++------+----------+
+5 rows in set (0.00 sec)
+
+
+
+4.  Find number of customers in each city, only include city with more than 2 customers.
+mysql> SELECT city, COUNT(*)  FROM Customer GROUP BY city HAVING COUNT(*) >= 2;
++------+----------+
+| city | COUNT(*) |
++------+----------+
+| mkm  |        2 |
++------+----------+
+1 row in set (0.00 sec)
+
+
+5. Show data as displayed ‘who, where’ Eg: ‘customer1 lives in ekm’
+
+mysql> SELECT CONCAT(name, ' lives in ', city) AS who_where FROM Customer;
++-------------------+
+| who_where         |
++-------------------+
+| abcd lives in mkm |
+| efgh lives in tdy |
+| pqr lives in ksd  |
+| hijk lives in omy |
+| pkr lives in mlp  |
+| mnl lives in mkm  |
++-------------------+
+6 rows in set (0.00 sec)
+
