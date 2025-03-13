@@ -226,3 +226,4 @@ mysql> SELECT CONCAT(name, ' lives in ', city) AS who_where FROM Customer;
 +-------------------+
 6 rows in set (0.00 sec)
 
+//VERIFIED
