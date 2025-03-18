@@ -40,5 +40,35 @@ mysql>   SELECT pname,price from Product where pid not in(select pid from Invoic
 
 4.    List the customer names who purchased the items ‘pen’ and ‘pencil’.
 
+mysql> select name from Customer where id in(select cust_id from Invoice_master where inv_id in(select Inv_id from Invoice_item where pid in(select pid from Product where pname='pen' or pname='pencil')));
++------+
+| name |
++------+
+| efgh |
+| hijk |
+| pqr  |
++------+
+3 rows in set (0.00 sec)
+
+
 5.    Display the purchased product details of the customer ’xyz’.
+
+mysql> select * from Product where pid in(select pid from Invoice_item where inv_id in(select inv_id from Invoice_master where cust_id in(select id from Customer  where name='abcd')));
++-----+-------+-------+
+| pid | pname | price |
++-----+-------+-------+
+|   5 | scale |  1530 |
++-----+-------+-------+
+1 row in set (0.00 sec)
 6.    List the names of all customers who have purchased at least 2 products, make sure that no duplicate names in the result.
+mysql> select name from Customer where id in(select cust_id from Invoice_master where inv_id in(select inv_id from Invoice_item group by inv_id
+having sum(quantity)>6));
++------+
+| name |
++------+
+| abcd |
+| pqr  |
+| hijk |
++------+
+3 rows in set (0.00 sec)
+
