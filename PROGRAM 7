@@ -103,5 +103,5 @@ mysql> SELECT pname  FROM Product  WHERE pid in (     SELECT pid      FROM Invoi
 +-------+
 1 row in set (0.01 sec)
 
-
+//VERIFIED
 
