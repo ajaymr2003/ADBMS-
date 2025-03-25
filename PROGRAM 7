@@ -58,6 +58,50 @@ mysql> select Customer.*,Invoice_master.* from Customer left join Invoice_master
 
 1.        Display customer_id, city  who lives either in ‘CLT’ or in ‘TVM’
 
+mysql> select id,city from Customer where city in('mkm','ksd');
++-------+------+
+| id    | city |
++-------+------+
+| 10001 | mkm  |
+| 10003 | ksd  |
+| 10006 | mkm  |
++-------+------+
+3 rows in set (0.00 sec)
+
+mysql> 
+
 2.       Display product details with an updated price amount(new price= old price+5rs)
-3.    Display customer details who doesn’t have phone number and lives in ‘Calicut’ city (use logical operators)
+mysql> SELECT *, (price + 5) AS new_price FROM Product;
++-----+--------+--------------------+--------------------+
+| pid | pname  | price              | new_price          |
++-----+--------+--------------------+--------------------+
+|   1 | soap   |               66.3 |               71.3 |
+|   2 | pen    |                 51 |                 56 |
+|   3 | pencil | 107.10000000000001 | 112.10000000000001 |
+|   4 | rubber |              132.6 |              137.6 |
+|   5 | scale  |               1530 |               1535 |
++-----+--------+--------------------+--------------------+
+5 rows in set (0.01 sec)
+
+ 
+3.    Display customer details who doesn’t have phone number and lives in ‘mkm’ city (use logical operators)
+
+mysql> SELECT*FROM Customer  WHERE ph_no IS NULL AND city='mkm';
++-------+------+-----------+------+-------+
+| id    | name | address   | city | ph_no |
++-------+------+-----------+------+-------+
+| 10006 | mnl  | mnl_house | mkm  |  NULL |
++-------+------+-----------+------+-------+
+
 4.    List the product names if it finds any records in the invoice items table has quantity =3 (use special operators)
+
+mysql> SELECT pname  FROM Product  WHERE pid in (     SELECT pid      FROM Invoice_item   where quantity =5 );
++-------+
+| pname |
++-------+
+| pen   |
++-------+
+1 row in set (0.01 sec)
+
+
+
