@@ -1,0 +1,63 @@
+OPTIMIZING DATABASE: (JOINS)
+1.     List the product name and quantity of invoice items.
+
+mysql> SELECT Product.pname,Invoice_item.quantity FROM Product INNER JOIN Invoice_item ON Product.pid = Invoice_item.pid;
++--------+----------+
+| pname  | quantity |
++--------+----------+
+| pen    |        5 |
+| pen    |       15 |
+| pencil |       80 |
+| rubber |       50 |
+| scale  |      200 |
++--------+----------+
+5 rows in set (0.00 sec)
+
+2.    Display invoice details of the transaction dated ’31-01-2022’.
+
+mysql> SELECT Invoice_master.inv_date, Customer.name, Product.pname, Invoice_item.quantity   FROM Invoice_master   JOIN Customer ON Invoice_master.cust_id = Customer.id   JOIN Invoice_item ON Invoice_master.inv_id = Invoice_item.inv_id   JOIN Product ON Invoice_item.pid = Product.pid   WHERE Invoice_master.inv_date = '2023-05-24';
++------------+------+--------+----------+
+| inv_date   | name | pname  | quantity |
++------------+------+--------+----------+
+| 2023-05-24 | efgh | pen    |        5 |
+| 2023-05-24 | efgh | pencil |       80 |
++------------+------+--------+----------+
+2 rows in set (0.00 sec)
+
+
+3.    Display the customer name, product name, invoice date of purchased item ‘pen’.
+
+mysql> SELECT Customer.name, Product.pname, Invoice_master.inv_date   FROM Invoice_master   JOIN Customer ON Invoice_master.cust_id = Customer.id   JOIN Invoice_item ON Invoice_master.inv_id = Invoice_item.inv_id   JOIN Product ON Invoice_item.pid = Product.pid   WHERE Product.pname = 'pen';
++------+-------+------------+
+| name | pname | inv_date   |
++------+-------+------------+
+| efgh | pen   | 2023-05-24 |
+| hijk | pen   | 2023-07-12 |
++------+-------+------------+
+2 rows in set (0.00 sec)
+
+4.    Display all customer details and invoice details must include customer has not purchased items.
+mysql> select Customer.*,Invoice_master.* from Customer left join Invoice_master on Customer.id=Invoice_master.cust_id;
++-------+------+------------+------+------------+--------+---------+------------+
+| id    | name | address    | city | ph_no      | inv_id | cust_id | inv_date   |
++-------+------+------------+------+------------+--------+---------+------------+
+| 10001 | abcd | abcd_house | mkm  | 9648457896 |    105 |   10001 | 2024-05-09 |
+| 10002 | efgh | efgh_house | tdy  | 9644645455 |    101 |   10002 | 2023-05-24 |
+| 10003 | pqr  | apk_house  | ksd  |  965648878 |    104 |   10003 | 2024-02-29 |
+| 10004 | hijk | hijk_house | omy  | 7844594555 |    102 |   10004 | 2023-07-12 |
+| 10004 | hijk | hijk_house | omy  | 7844594555 |    103 |   10004 | 2023-01-19 |
+| 10005 | pkr  | pkr_house  | mlp  | 7034534922 |   NULL |    NULL | NULL       |
+| 10006 | mnl  | mnl_house  | mkm  |       NULL |   NULL |    NULL | NULL       |
++-------+------+------------+------+------------+--------+---------+------------+
+7 rows in set (0.00 sec)
+
+
+
+ OPTIMIZING DATABASE: (Using Set, arithmetic, logical and special operators)
+
+
+1.        Display customer_id, city  who lives either in ‘CLT’ or in ‘TVM’
+
+2.       Display product details with an updated price amount(new price= old price+5rs)
+3.    Display customer details who doesn’t have phone number and lives in ‘Calicut’ city (use logical operators)
+4.    List the product names if it finds any records in the invoice items table has quantity =3 (use special operators)
