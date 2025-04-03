@@ -1,0 +1,104 @@
+PL/SQL PROGRAMS- STORED PROCEDURES
+
+1.      Create a procedure to display all tables in the invoice database.
+
+
+mysql> delimiter$$
+mysql> create procedure display()
+    -> begin
+    -> select * from Customer;
+    -> select * from Product;
+    -> select * from Invoice_master;
+    -> select * from Invoice_item;
+    -> end$$
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> call display()$$
++-------+------+------------+------+------------+
+| id    | name | address    | city | ph_no      |
++-------+------+------------+------+------------+
+| 10001 | abcd | abcd_house | mkm  | 9648457896 |
+| 10002 | efgh | efgh_house | tdy  | 9644645455 |
+| 10003 | pqr  | apk_house  | ksd  |  965648878 |
+| 10004 | hijk | hijk_house | omy  | 7844594555 |
+| 10005 | pkr  | pkr_house  | mlp  | 7034534922 |
+| 10006 | mnl  | mnl_house  | mkm  |       NULL |
++-------+------+------------+------+------------+
+6 rows in set (0.00 sec)
+
++-----+--------+--------------------+
+| pid | pname  | price              |
++-----+--------+--------------------+
+|   1 | soap   |               66.3 |
+|   2 | pen    |                 51 |
+|   3 | pencil | 107.10000000000001 |
+|   4 | rubber |              132.6 |
+|   5 | scale  |               1530 |
++-----+--------+--------------------+
+5 rows in set (0.00 sec)
+
++--------+---------+------------+
+| inv_id | cust_id | inv_date   |
++--------+---------+------------+
+|    101 |   10002 | 2023-05-24 |
+|    102 |   10004 | 2023-07-12 |
+|    103 |   10004 | 2023-01-19 |
+|    104 |   10003 | 2024-02-29 |
+|    105 |   10001 | 2024-05-09 |
++--------+---------+------------+
+5 rows in set (0.00 sec)
+
++--------+------+----------+
+| inv_id | pid  | quantity |
++--------+------+----------+
+|    101 |    2 |        5 |
+|    102 |    2 |       15 |
+|    103 |    4 |       50 |
+|    101 |    3 |       80 |
+|    105 |    5 |      200 |
++--------+------+----------+
+5 rows in set (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+2.      Create a procedure to find greatest of 2 numbers.
+
+mysql> create procedure greatest(a int,b int)
+    -> begin
+    -> declare x,y int;
+    -> set x=a;
+    -> set y=b;
+    -> if x>y 
+    -> then select x as 'greater';
+    -> else
+    -> select y as 'Greater';
+    -> end if;
+    -> end$$
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> call greatest(5,10)$$
++---------+
+| Greater |
++---------+
+|      10 |
++---------+
+1 row in set (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+
+3.      Create a procedure to display invoice details of a particular customer.
+
+mysql> create procedure cdetailss(N varchar(20)) begin select Customer.name,Invoice_master.*,Invoice_item.quantity,Product.* from  Invoice_item
+join Invoice_master on Invoice_master.inv_id=Invoice_item.inv_id join Product on Product.pid=Invoice_item.pid join Customer on Customer.id=Invoice_master.cust_id where Customer.name=N; end$$
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> call cdetailss('abcd')$$
++------+--------+---------+------------+----------+-----+-------+-------+
+| name | inv_id | cust_id | inv_date   | quantity | pid | pname | price |
++------+--------+---------+------------+----------+-----+-------+-------+
+| abcd |    105 |   10001 | 2024-05-09 |      200 |   5 | scale |  1530 |
++------+--------+---------+------------+----------+-----+-------+-------+
+1 row in set (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
