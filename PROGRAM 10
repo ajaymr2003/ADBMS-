@@ -1,0 +1,63 @@
+1.      Create a trigger to handle updates to the customer table.
+
+mysql> create trigger UPCUSTOMER after update on Customer for each row begin insert into Customer1 set id=old.id,name=old.name, address=old.address, city=old.city, ph_no=old.ph_no ; end;//
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> update Customer set name ='iiii' where id=10002//
+Query OK, 0 rows affected (0.01 sec)
+Rows matched: 1  Changed: 0  Warnings: 0
+
+mysql> select * from Customer1//
++-------+------+------------+------+------------+
+| id    | name | address    | city | ph_no      |
++-------+------+------------+------+------------+
+| 10002 | iiii | efgh_house | tdy  | 9644645455 |
++-------+------+------------+------+------------+
+1 row in set (0.00 sec)
+
+
+2.      Create a trigger to handle inserts to the product relation ( if price < 5 the set price to 10).
+
+mysql> create trigger pcheck
+    -> before insert on Product
+    -> for each row
+    -> begin
+    -> if new.price<5 then
+    -> set new.price=10;
+    -> end if;
+    -> end;
+    -> //
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> select * from Product
+    -> //
++-----+--------+--------------------+
+| pid | pname  | price              |
++-----+--------+--------------------+
+|   1 | soap   |               66.3 |
+|   2 | pen    |                 51 |
+|   3 | pencil | 107.10000000000001 |
+|   4 | rubber |              132.6 |
+|   5 | scale  |               1530 |
++-----+--------+--------------------+
+5 rows in set (0.01 sec)
+
+mysql> insert into Product values(6,'marker',4);
+    -> //
+Query OK, 1 row affected (0.00 sec)
+
+mysql> select * from Product
+    -> //
++-----+--------+--------------------+
+| pid | pname  | price              |
++-----+--------+--------------------+
+|   1 | soap   |               66.3 |
+|   2 | pen    |                 51 |
+|   3 | pencil | 107.10000000000001 |
+|   4 | rubber |              132.6 |
+|   5 | scale  |               1530 |
+|   6 | marker |                 10 |
++-----+--------+--------------------+
+6 rows in set (0.00 sec)
+
+mysql> 
