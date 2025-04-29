@@ -187,3 +187,4 @@ rs0 [direct: primary] testDB> db.customers.find().pretty()
 ]
 rs0 [direct: primary] testDB> 
 
+//VERIFIED
